@@ -1,0 +1,120 @@
+<div class="page-header">
+  <div class="flag">
+    <img src="../../../assets/images/flag.png" width="100"/>
+  </div>
+  <div class="headerTitle">
+    <h1>Check South African Mobile Numbers</h1>
+  </div>
+  <div class="flag">
+    <img src="../../../assets/images/flag.png" width="100"/>
+  </div>
+</div>
+<div>
+  <p>
+    Check the correct format of South African mobile numbers. <br>
+    Check a list of numbers uploading a csv file formatted "ID,NUMBER" or Check a Single Number
+  </p>
+  <p style="font-size: small">
+    The correct format has 11 numbers and starts with the prefix 27
+  </p>
+</div>
+<hr>
+<div class="container">
+  <div class="leftBox">
+    <form [formGroup]="formUpload" name="loadCsv" enctype="multipart/form-data" (ngSubmit)="uploadFile()">
+      <p class="label">Upload file csv</p>
+      <input type="file"
+             id="files"
+             name="files"
+             multiple="multiple"
+             formControlName="file"
+             required
+             accept=" .csv"
+             (change)="saveFileTemp($event)">
+      <div *ngIf="fupload.file.invalid && showList" class="alert alert-danger">
+        <div *ngIf="fupload.file.errors.required">File is required.</div>
+      </div>
+      <p class="uploadButton">
+        <button
+          type="submit"
+          class="btn btn-lg btn-primary">Upload File
+        </button>
+      </p>
+    </form>
+  </div>
+  <div class="rightBox">
+    <form name="checkNum" [formGroup]="formCheck">
+      <p class="label">Check single number</p>
+      <button type="submit" class="checkButton btn-lg btn-info" (click)="checkSingleNumber()">Check</button>
+      <input type="text" id="checkNumber" required name="checkNumber" formControlName="numberCheck">
+
+      <ng-container *ngIf="showMessageChecked">
+
+        <div [ngClass]="{
+      ' alert-danger' : typeNumberChecked == 'NOT_VALID' || messageNumberChecked === 'REQUIRED' ,
+      ' alert-success': typeNumberChecked == 'VALID',
+      ' alert-warning': typeNumberChecked == 'FIXED'}">
+
+          <div class="alert" *ngIf="messageNumberChecked === 'REQUIRED'">Number is Required.</div>
+          <div class="alert" *ngIf="messageNumberChecked === 'STRING'">Is not number</div>
+          <div class="alert" *ngIf="messageNumberChecked === 'LENGTH'">Length is wrong</div>
+          <div class="alert" *ngIf="messageNumberChecked === 'PREFIX WRONG'">Prefix is wrong</div>
+
+          <div class="alert" *ngIf="typeNumberChecked == 'VALID'">Number is Correct</div>
+          <div class="alert" *ngIf="typeNumberChecked == 'FIXED'">Number is fixable adding prefix 27</div>
+        </div>
+
+      </ng-container>
+
+    </form>
+  </div>
+</div>
+<hr>
+<div class="containerResults" *ngIf="totalList.length>0 && showList">
+  <div class="totalList">
+    <p>LOADED NUMBERS</p>
+    <table class="tableTotal">
+      <th *ngFor="let column of headers">
+        {{column}}
+      </th>
+      <tr *ngFor="let row of totalList">
+        <td>
+          {{row.id}}
+        </td>
+        <td>
+          {{row.numeroTel}}
+        </td>
+      </tr>
+    </table>
+  </div>
+  <div class="resultsList">
+    <button class="btn-lg btn-success" (click)="showPartialNumbers('correct')">CORRECT</button>
+    <button class="btn-lg btn-danger" (click)="showPartialNumbers('wrong')">WRONG</button>
+    <button class="btn-lg btn-warning" (click)="showPartialNumbers('fixed')">FIXED</button>
+    <div class="totalList" *ngIf="partialList.length > 0">
+      <div>
+        <div *ngIf="showCorrect">The Correct Number are: {{partialList.length}}</div>
+        <div *ngIf="showFixed">The Fixed Number are: {{partialList.length}}</div>
+        <div *ngIf="showWrong">The Wrong Number are: {{partialList.length}}</div>
+      </div>
+      <table class="tablePartial">
+        <th *ngFor="let column of headersPartial">
+          {{column}}
+        </th>
+        <tr *ngFor="let row of partialList">
+          <td>
+            {{row.id}}
+          </td>
+          <td>
+            {{row.numeroTel}}
+          </td>
+          <td *ngIf="row.note == 'LENGTH'">Length is wrong</td>
+          <td *ngIf="row.note == 'STRING'">Is not number</td>
+          <td *ngIf="row.note == 'PREFIX WRONG'">Prefix is wrong</td>
+          <td *ngIf="row.note == 'ADDED PREFIX'">Added prefix 27</td>
+          <td *ngIf="!row.note"></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>
