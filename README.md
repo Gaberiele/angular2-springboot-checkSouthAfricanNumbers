@@ -1,7 +1,7 @@
 # angular2-springboot-checkSouthAfricanNumbers
 Check Correct Format of South African Numbers. Angular2 &amp; Spring Boot
 
-The Project is developed in Angular 2 for Frontend, Spring Boot for Backend and SQLite DB 
+The Project is developed in Angular 2 for Frontend, Spring Boot with Java e Spring Data Jpa for Backend and SQLite for DB 
 
 The folders in Repository is checkSANumberApp (Backend) and checkSANumberFe (Frontend)
 <hr>
@@ -28,10 +28,14 @@ npm install
   <code>
 npm start
 </code>
+<br><br>
+<b> IMPORTANT: Enable the CORS on your browser with a CORS Extension</b>
 
 <hr>
 
 <b>Result</b>
+
+Go to Localhost:4200
 
 <br><br>
 
